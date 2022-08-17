@@ -37,7 +37,6 @@ export class StockListComponent implements OnInit {
         this.companyInfo = this.companyInfo.result;
         this.companyInfo.forEach((company, index) => {
           if (stock === company.symbol) {
-            console.log(stockObject);
             stockObject.companyInfo = this.companyInfo[index];
             this.companyStocksArray[stockObject.index] = stockObject;
           }
