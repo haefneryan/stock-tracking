@@ -1,0 +1,38 @@
+<h2>Enter the smybol of a stock to track (i.e. AAPL, TSLA, GOOGL)</h2>
+<input
+  [(ngModel)]="enteredStock"
+  type="text"
+  required
+  maxlength="5"
+  onkeydown="return /[a-z]/i.test(event.key)"
+  placeholder="Enter the symbol..."
+/>
+<button (click)="trackStock()">Track Stock</button>
+<p>Current Stocks Array: {{ stocksArrayString }}</p>
+
+<h3 *ngIf="!dataLoaded">LOADING...</h3>
+<div *ngIf="dataLoaded">
+  <div *ngFor="let companyStock of companyStocksArray; let i = index">
+    <h3>
+      {{ companyStock.companyInfo.description }}
+      ({{ companyStock.companyInfo.symbol }})
+    </h3>
+    <p>Change: {{ companyStock.stockInfo.d | number: '0.1-2' }}%</p>
+    <p>Current Price: {{ companyStock.stockInfo.c | currency: 'USD' }}</p>
+    <p>Opening Price: {{ companyStock.stockInfo.o | currency: 'USD' }}</p>
+    <p>High Price: {{ companyStock.stockInfo.h | currency: 'USD' }}</p>
+    <button (click)="removeCompanyStock(i)">X</button>
+    <div class="arrow arrow-green">
+      <ng-template [ngIf]="companyStock.stockInfo.d > 0">🡅</ng-template>
+    </div>
+    <div class="arrow arrow-red">
+      <ng-template [ngIf]="companyStock.stockInfo.d < 0">🡇</ng-template>
+    </div>
+    <br />
+    <br />
+    <button [routerLink]="['sentiment', companyStock.companyInfo.symbol]">
+      Go to social sentiment details ->
+    </button>
+    <hr />
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<h3 *ngIf="!dataLoaded">LOADING...</h3>
+
+<div *ngIf="dataLoaded">
+  <button routerLink=""><-- Back to list of Stocks</button>
+  <div>
+    <h3>{{ stockSymbol }}</h3>
+    <div *ngFor="let item of data">
+      <div [ngSwitch]="item.month">
+        <p *ngSwitchCase="1">Januar</p>
+        <p *ngSwitchCase="2">February</p>
+        <p *ngSwitchCase="3">March</p>
+        <p *ngSwitchCase="4">April</p>
+        <p *ngSwitchCase="5">May</p>
+        <p *ngSwitchCase="6">June</p>
+        <p *ngSwitchCase="7">July</p>
+        <p *ngSwitchCase="8">August</p>
+        <p *ngSwitchCase="9">September</p>
+        <p *ngSwitchCase="10">October</p>
+        <p *ngSwitchCase="11">November</p>
+        <p *ngSwitchCase="12">December</p>
+      </div>
+      <p>Change: {{ item.change }}</p>
+      <p>MSPR: {{ item.mspr | number: '0.0-2' }}</p>
+      <i class="fa-solid fa-circle-arrow-up"></i>
+      <div class="arrow arrow-green">
+        <ng-template [ngIf]="item.change > 0">🡅</ng-template>
+      </div>
+      <div class="arrow arrow-red">
+        <ng-template class="test" [ngIf]="item.change < 0">🡇</ng-template>
+      </div>
+      <hr />
+    </div>
+  </div>
+</div>
