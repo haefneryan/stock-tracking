@@ -24,6 +24,7 @@ export class StockListComponent implements OnInit {
       this.stocksArray = JSON.parse(this.stocksArrayString);
     } else {
       window.localStorage.setItem('stocks', '');
+      this.dataLoaded = true;
     }
 
     this.stocksArray.forEach((stock, index) => {
