@@ -42,21 +42,22 @@ export class SentimentComponent implements OnInit {
 
     this.fetchDataService.getInsiderSentimentData(this.stockSymbol).subscribe({
       next: (data) => {
-        this.data = data;
-        this.data = this.data.data;
-        this.data.forEach((item, index) => {
-          if (item.year === year && item.month > month - 3) {
-            if (item.month === month - 2) {
-              this.tempData[0] = item;
-            } else if (item.month === month - 1) {
-              this.tempData[1] = item;
-            } else if (item.month === month) {
-              this.tempData[2] = item;
-            }
-          }
-        });
-        this.data = this.tempData;
-        this.dataLoaded = true;
+        // console.log(data)
+        // this.data = data;
+        // this.data = this.data.data;
+        // this.data.forEach((item) => {
+        //   if (item.year === year && item.month > month - 3) {
+        //     if (item.month === month - 2) {
+        //       this.tempData[0] = item;
+        //     } else if (item.month === month - 1) {
+        //       this.tempData[1] = item;
+        //     } else if (item.month === month) {
+        //       this.tempData[2] = item;
+        //     }
+        //   }
+        // });
+        // this.data = this.tempData;
+        // this.dataLoaded = true;
       },
     });
   }

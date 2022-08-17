@@ -19,7 +19,6 @@ export class StockListComponent implements OnInit {
   stocksArray: string[] = [];
   stocksArrayString: string;
   companyInfo: companyInfo[];
-  stocksInfo: stockInfo[];
   companyStocksArray: dataInfo[] = [];
   dataLoaded: boolean = false;
   counter: number = 0;
@@ -40,15 +39,13 @@ export class StockListComponent implements OnInit {
     }
 
     this.stocksArray.forEach((stock, index) => {
-      const stockObject = {
+      const stockObject: dataInfo = {
         index: index,
-        companyInfo: {},
-        stockInfo: {},
+        companyInfo: null,
+        stockInfo: null,
       };
       this.fetchDataService.getAllCompanyData(stock).subscribe((data) => {
-        console.log(data);
-        this.companyInfo = data;
-        this.companyInfo = this.companyInfo.result;
+        this.companyInfo = data['result'];
         this.companyInfo.forEach((company, index) => {
           if (stock === company.symbol) {
             stockObject.companyInfo = this.companyInfo[index];
@@ -89,7 +86,6 @@ export class StockListComponent implements OnInit {
             this.counter === this.stocksArray.length - 1
           ) {
             this.dataLoaded = true;
-            console.log(this.companyStocksArray);
           }
           this.counter++;
         });
