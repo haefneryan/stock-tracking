@@ -22,7 +22,8 @@ export class StockListComponent implements OnInit {
     console.log(window.localStorage.getItem('stocks'));
     if (
       window.localStorage.getItem('stocks') === '' ||
-      window.localStorage.getItem('stocks') === '[]'
+      window.localStorage.getItem('stocks') === '[]' ||
+      window.localStorage.getItem('stocks') === null
     ) {
       window.localStorage.setItem('stocks', '');
       this.dataLoaded = true;
