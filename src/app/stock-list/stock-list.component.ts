@@ -19,7 +19,6 @@ export class StockListComponent implements OnInit {
   constructor(private fetchDataService: FetchDataService) {}
 
   ngOnInit() {
-    console.log(window.localStorage.getItem('stocks'));
     if (
       window.localStorage.getItem('stocks') === '' ||
       window.localStorage.getItem('stocks') === '[]' ||

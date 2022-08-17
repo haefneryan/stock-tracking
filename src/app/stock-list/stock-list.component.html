@@ -24,6 +24,11 @@
     <div class="arrow arrow-green">
       <ng-template [ngIf]="companyStock.stockInfo.d > 0">🡅</ng-template>
     </div>
+    <div class="arrow">
+      <ng-template class="test" [ngIf]="companyStock.stockInfo.d === 0"
+        >🠺</ng-template
+      >
+    </div>
     <div class="arrow arrow-red">
       <ng-template [ngIf]="companyStock.stockInfo.d < 0">🡇</ng-template>
     </div>
