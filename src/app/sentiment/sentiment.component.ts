@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FetchDataService } from '../fetch-data.service';
+import { sentimentDetail } from '../sentimentDetail';
+import { sentimentInfo } from '../sentimentInfo';
 
 @Component({
   selector: 'app-sentiment',
@@ -9,9 +11,10 @@ import { FetchDataService } from '../fetch-data.service';
 })
 export class SentimentComponent implements OnInit {
   stockSymbol: string;
-  data: any;
-  tempData: any[] = [];
-  dataLoaded = false;
+  data: sentimentInfo;
+  sentimentData: sentimentDetail[];
+  tempData: sentimentDetail[] = [];
+  dataLoaded: boolean = false;
 
   constructor(
     private fetchDataService: FetchDataService,
@@ -27,37 +30,45 @@ export class SentimentComponent implements OnInit {
 
     this.tempData = [
       {
-        change: null,
+        change: 0,
         month: month - 2,
+        mspr: 0,
+        symbol: '',
+        year: 0,
       },
       {
-        change: null,
+        change: 0,
         month: month - 1,
+        mspr: 0,
+        symbol: '',
+        year: 0,
       },
       {
-        change: null,
-        month,
+        change: 0,
+        month: month,
+        mspr: 0,
+        symbol: '',
+        year: 0,
       },
     ];
 
     this.fetchDataService.getInsiderSentimentData(this.stockSymbol).subscribe({
       next: (data) => {
-        // console.log(data)
-        // this.data = data;
-        // this.data = this.data.data;
-        // this.data.forEach((item) => {
-        //   if (item.year === year && item.month > month - 3) {
-        //     if (item.month === month - 2) {
-        //       this.tempData[0] = item;
-        //     } else if (item.month === month - 1) {
-        //       this.tempData[1] = item;
-        //     } else if (item.month === month) {
-        //       this.tempData[2] = item;
-        //     }
-        //   }
-        // });
-        // this.data = this.tempData;
-        // this.dataLoaded = true;
+        this.data = data;
+        this.sentimentData = this.data.data;
+        this.sentimentData.forEach((item) => {
+          if (item.year === year && item.month > month - 3) {
+            if (item.month === month - 2) {
+              this.tempData[0] = item;
+            } else if (item.month === month - 1) {
+              this.tempData[1] = item;
+            } else if (item.month === month) {
+              this.tempData[2] = item;
+            }
+          }
+        });
+        this.data.data = this.tempData;
+        this.dataLoaded = true;
       },
     });
   }
