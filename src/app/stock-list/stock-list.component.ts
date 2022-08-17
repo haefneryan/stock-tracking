@@ -1,5 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FetchDataService } from '../fetch-data.service';
+import { companyInfo } from '../companyInfo';
+import { stockInfo } from '../stockInfo';
+
+export interface dataInfo {
+  companyInfo: companyInfo;
+  index: number;
+  stockInfo: stockInfo;
+}
 
 @Component({
   selector: 'app-stock-list',
@@ -10,11 +18,11 @@ export class StockListComponent implements OnInit {
   enteredStock: string;
   stocksArray: string[] = [];
   stocksArrayString: string;
-  companyStocksArray: any[] = [];
-  companyInfo;
-  stocksInfo;
-  dataLoaded = false;
-  counter = 0;
+  companyInfo: companyInfo[];
+  stocksInfo: stockInfo[];
+  companyStocksArray: dataInfo[] = [];
+  dataLoaded: boolean = false;
+  counter: number = 0;
 
   constructor(private fetchDataService: FetchDataService) {}
 
@@ -38,6 +46,7 @@ export class StockListComponent implements OnInit {
         stockInfo: {},
       };
       this.fetchDataService.getAllCompanyData(stock).subscribe((data) => {
+        console.log(data);
         this.companyInfo = data;
         this.companyInfo = this.companyInfo.result;
         this.companyInfo.forEach((company, index) => {
@@ -80,6 +89,7 @@ export class StockListComponent implements OnInit {
             this.counter === this.stocksArray.length - 1
           ) {
             this.dataLoaded = true;
+            console.log(this.companyStocksArray);
           }
           this.counter++;
         });
