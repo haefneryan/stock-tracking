@@ -19,12 +19,16 @@ export class StockListComponent implements OnInit {
   constructor(private fetchDataService: FetchDataService) {}
 
   ngOnInit() {
-    if (window.localStorage.getItem('stocks')) {
-      this.stocksArrayString = window.localStorage.getItem('stocks');
-      this.stocksArray = JSON.parse(this.stocksArrayString);
-    } else {
+    console.log(window.localStorage.getItem('stocks'));
+    if (
+      window.localStorage.getItem('stocks') === '' ||
+      window.localStorage.getItem('stocks') === '[]'
+    ) {
       window.localStorage.setItem('stocks', '');
       this.dataLoaded = true;
+    } else {
+      this.stocksArrayString = window.localStorage.getItem('stocks');
+      this.stocksArray = JSON.parse(this.stocksArrayString);
     }
 
     this.stocksArray.forEach((stock, index) => {
@@ -71,7 +75,10 @@ export class StockListComponent implements OnInit {
         .getAllStockData(companyStock.companyInfo.symbol)
         .subscribe((data) => {
           this.companyStocksArray[index].stockInfo = data;
-          if (this.counter === this.stocksArray.length - 1) {
+          if (
+            this.stocksArray.length === 1 ||
+            this.counter === this.stocksArray.length - 1
+          ) {
             this.dataLoaded = true;
           }
           this.counter++;
