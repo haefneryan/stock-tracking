@@ -42,10 +42,11 @@ export class SentimentComponent implements OnInit {
 
     this.fetchDataService.getInsiderSentimentData(this.stockSymbol).subscribe({
       next: (data) => {
+        console.log(data);
         this.data = data;
         this.data = this.data.data;
         this.data.forEach((item, index) => {
-          if (item.year === year && item.month > month - 2) {
+          if (item.year === year && item.month > month - 3) {
             if (item.month === month - 2) {
               this.tempData[0] = item;
             } else if (item.month === month - 1) {
@@ -55,6 +56,7 @@ export class SentimentComponent implements OnInit {
             }
           }
         });
+        console.log(this.tempData);
         this.data = this.tempData;
         this.dataLoaded = true;
       },
