@@ -14,33 +14,38 @@ export class StockListComponent implements OnInit {
   companyInfo;
   stocksInfo;
   dataLoaded = false;
+  counter = 0;
 
   constructor(private fetchDataService: FetchDataService) {}
 
   ngOnInit() {
-    this.stocksArrayString = window.localStorage.getItem('stocks');
-    this.stocksArray = JSON.parse(this.stocksArrayString);
+    if (window.localStorage.getItem('stocks')) {
+      this.stocksArrayString = window.localStorage.getItem('stocks');
+      this.stocksArray = JSON.parse(this.stocksArrayString);
+    } else {
+      window.localStorage.setItem('stocks', '');
+    }
 
     this.stocksArray.forEach((stock, index) => {
       const stockObject = {
         index: index,
-        companyInfo: [],
-        stockInfo: [],
+        companyInfo: {},
+        stockInfo: {},
       };
       this.fetchDataService.getAllCompanyData(stock).subscribe((data) => {
         this.companyInfo = data;
         this.companyInfo = this.companyInfo.result;
         this.companyInfo.forEach((company, index) => {
           if (stock === company.symbol) {
+            console.log(stockObject);
             stockObject.companyInfo = this.companyInfo[index];
+            this.companyStocksArray[stockObject.index] = stockObject;
           }
         });
-        this.fetchDataService.getAllStockData(stock).subscribe((data) => {
-          this.stocksInfo = data;
-          stockObject.stockInfo = this.stocksInfo;
-          this.companyStocksArray[stockObject.index] = stockObject;
-          this.dataLoaded = true;
-        });
+        if (this.counter === this.stocksArray.length - 1) {
+          this.getStockInfo();
+        }
+        this.counter++;
       });
     });
   }
@@ -57,5 +62,20 @@ export class StockListComponent implements OnInit {
     this.stocksArray.splice(index, 1);
     this.companyStocksArray.splice(index, 1);
     window.localStorage.setItem('stocks', JSON.stringify(this.stocksArray));
+  }
+
+  getStockInfo() {
+    this.counter = 0;
+    this.companyStocksArray.forEach((companyStock, index) => {
+      this.fetchDataService
+        .getAllStockData(companyStock.companyInfo.symbol)
+        .subscribe((data) => {
+          this.companyStocksArray[index].stockInfo = data;
+          if (this.counter === this.stocksArray.length - 1) {
+            this.dataLoaded = true;
+          }
+          this.counter++;
+        });
+    });
   }
 }

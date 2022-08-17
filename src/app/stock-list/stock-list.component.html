@@ -8,7 +8,6 @@
   placeholder="Enter the symbol..."
 />
 <button (click)="trackStock()">Track Stock</button>
-<p>Current Stocks Array: {{ stocksArrayString }}</p>
 
 <h3 *ngIf="!dataLoaded">LOADING...</h3>
 <div *ngIf="dataLoaded">
